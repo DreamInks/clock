@@ -21,16 +21,16 @@ function renderTime() {
 
 
 	gradient = context.createRadialGradient(canvas.width/2,canvas.height/2,5,canvas.width/2,canvas.height/2,300);
-	gradient.addColorStop(0,"#09303a");
-	gradient.addColorStop(1,'black');
+	gradient.addColorStop(0,"#131");
+	gradient.addColorStop(1,'#000');
 	context.fillStyle = gradient;
 	context.fillRect(0,0,canvas.width,canvas.height);
 
-	context.strokeStyle = "#28d1f3";
+	context.strokeStyle = "#0f0";
 	context.lineWidth = 17;
-	context.lineCap = "round";
+	// context.lineCap = "round";
 	context.shadowBlur = 15;
-	context.shadowColor = "#28d1f3";
+	context.shadowColor = "#0f0";
 
 	context.beginPath();
 	context.arc(canvas.width/2, canvas.height/2, 200, degToRad(270), degToRad(hours*15)-90);
@@ -45,11 +45,11 @@ function renderTime() {
 	context.stroke();
 
 	context.font = "25px Arial";
-	context.fillStyle = "#28d1f3";
+	context.fillStyle = "#0f0";
 	context.fillText(today, canvas.width / 2 - 100, canvas.height / 2);
 
 	context.font = "15px Arial";
-	context.fillStyle = "#28d1f3";
+	context.fillStyle = "#0f0";
 	context.fillText(time, canvas.width / 2 - 100, canvas.height / 2 + 30);
 
 }
