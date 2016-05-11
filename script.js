@@ -1,28 +1,87 @@
+
+////////////////////////////////////////////////////////////////////////////
+
 var canvas = document.getElementById('clock');
 var context = canvas.getContext('2d');
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-var now = new Date();
-var today = now.toDateString();
-var time = now.toLocaleTimeString();
-var hours = now.getHours();
-var minutes = now.getMinutes();
-var seconds = now.getSeconds();
-var milliseconds = now.getMilliseconds();
-var newSeconds = seconds + (milliseconds / 1000);
+////////////////////////////////////////////////////////////////////////////
 
 var bits = [];
 
+////////////////////////////////////////////////////////////////////////////
+
+setInterval(web, 40);
+
 generateBits();
 
+////////////////////////////////////////////////////////////////////////////
+
 function generateBits() {
-	var bitCount = 100;
-	for (var i = 0; i < bitCount; i++) {
-		bits.push(new Bit());
+	var ctr = 0;
+	for (var i = 0; i < canvas.height + 20; i+=20) {
+		for (var j = 0; j < canvas.width + 20; j+=20, ctr++) {
+			bits.push(new Bit(j,i,ctr%2));
+		}
+	}
+	ctr = 0;
+}
+
+////////////////////////////////////////////////////////////////////////////
+
+function web() {
+	clearCanvas();
+	renderBits();
+	renderTime();
+}
+
+////////////////////////////////////////////////////////////////////////////
+
+function renderTime() {
+
+	var now = new Date();
+	var hours = now.getHours();
+	var minutes = now.getMinutes();
+	var seconds = now.getSeconds();
+	var milliseconds = now.getMilliseconds();
+	var newSeconds = seconds + (milliseconds / 1000);
+
+	context.strokeStyle = "#36CDFF";
+	context.lineWidth = 17;
+	context.lineCap = "round";
+	
+	context.shadowBlur = 15;
+	context.shadowColor = "#36CDFF";
+	context.beginPath();
+	context.arc(canvas.width/2, canvas.height/2, 200, degToRad(270), degToRad(hours*15)-90);
+	context.stroke();
+	context.beginPath();
+	context.arc(canvas.width/2, canvas.height/2, 170, degToRad(270), degToRad(minutes*6)-90);
+	context.stroke();
+	context.beginPath();
+	context.arc(canvas.width/2, canvas.height/2, 140, degToRad(270), degToRad(newSeconds*6)-90);
+	context.stroke();
+
+	var today = now.toDateString();
+	var time = now.toLocaleTimeString();
+
+	context.font = "25px Arial";
+	context.fillStyle = "#36CDFF";
+	context.fillText(today, canvas.width / 2 - 100, canvas.height / 2);
+	context.font = "15px Arial";
+	context.fillStyle = "#36CDFF";
+	context.fillText(time, canvas.width / 2 - 100, canvas.height / 2 + 30);
+}
+
+function renderBits() {
+	for (var i = 0; i < bits.length; i++) {
+		bits[i].update().draw();
 	}
 }
+
+////////////////////////////////////////////////////////////////////////////
 
 function degToRad(degree) {
 	var factor = Math.PI / 180;
@@ -35,108 +94,47 @@ function randomBetween(min, max) {
 
 function clearCanvas() {
 	gradient = context.createRadialGradient(canvas.width/2,canvas.height/2,5,canvas.width/2,canvas.height/2,300);
-	gradient.addColorStop(0,"#131");
+	gradient.addColorStop(0,"#116");
+	gradient.addColorStop(0.5,"#116");
 	gradient.addColorStop(1,'#000');
 	context.fillStyle = gradient;
 	context.fillRect(0,0,canvas.width,canvas.height);
 }
 
-function renderTime() {
+////////////////////////////////////////////////////////////////////////////
 
-	now = new Date();
-	today = now.toDateString();
-	time = now.toLocaleTimeString();
-	hours = now.getHours();
-	minutes = now.getMinutes();
-	seconds = now.getSeconds();
-	milliseconds = now.getMilliseconds();
-	newSeconds = seconds + (milliseconds / 1000);	
-
-	context.strokeStyle = "#0f0";
-	context.lineWidth = 17;
-	// context.lineCap = "round";
-	
-	context.shadowBlur = 15;
-	context.shadowColor = "#0f0";
-	context.beginPath();
-	context.arc(canvas.width/2, canvas.height/2, 200, degToRad(270), degToRad(hours*15)-90);
-	context.stroke();
-	context.beginPath();
-	context.arc(canvas.width/2, canvas.height/2, 170, degToRad(270), degToRad(minutes*6)-90);
-	context.stroke();
-	context.beginPath();
-	context.arc(canvas.width/2, canvas.height/2, 140, degToRad(270), degToRad(newSeconds*6)-90);
-	context.stroke();
-
-	context.font = "25px Arial";
-	context.fillStyle = "#0f0";
-	context.fillText(today, canvas.width / 2 - 100, canvas.height / 2);
-	context.font = "15px Arial";
-	context.fillStyle = "#0f0";
-	context.fillText(time, canvas.width / 2 - 100, canvas.height / 2 + 30);
-
-}
-
-function renderBits() {
-	for (var i = 0; i < bits.length; i++) {
-		bits[i].update().draw();
-	}
-}
-
-function web() {
-	clearCanvas();
-	renderBits();
-	renderTime();
-}
-
-setInterval(web, 40);
-
-function Bit() {
+function Bit(x,y,test) {
 	this.value = randomBetween(0,2);
-	this.speed = randomBetween(1,10);
-	this.valueHeight = randomBetween(5,15);
-	this.x = randomBetween(0, canvas.width/2);
-	this.y = randomBetween(0, canvas.height/2);
+	this.x = x;
+	this.y = y;
+	this.test = test;
 
 	this.control = function() {
-		if (this.y < 0) {
-			this.y = canvas.height/2;
-		}
-		if (this.y > canvas.height/2 + this.valueHeight) {
+		if (this.y < 0)
+			this.y = canvas.height + 10;
+		if (this.y > canvas.height + 10)
 			this.y = 0;
-		}
-		if (this.x < 0) {
-			this.x = canvas.width/2;
-		}
-		if (this.x > canvas.width/2) {
-			this.x = 0;
-		}
 	}
 
 	this.update = function() {
-		this.y -= this.speed;
-		this.x -= this.speed;
 		this.control();
+
+		if (randomBetween(0,10) == 0) {
+			this.value = randomBetween(0,2);
+		}
+
+		if (this.test == 0)
+			this.y--;
+		else if (this.test == 1)
+			this.y++;
 
 		return this;
 	}
 
 	this.draw = function() {
-		context.fillStyle = "#0f0";
+		context.shadowBlur = 0;
+		context.font = "10px Arial";
+		context.fillStyle = "#00f";
 		context.fillText(this.value, this.x, this.y);
-		context.font = "" + this.valueHeight + "px Arial";
-
-		context.fillStyle = "#0f0";
-		context.fillText(this.value, canvas.width/2 + (canvas.width/2 - this.x), this.y);
-		context.font = "" + this.valueHeight + "px Arial";
-
-		context.fillStyle = "#0f0";
-		context.fillText(this.value, this.x, canvas.height/2 + (canvas.height/2 - this.y));
-		context.font = "" + this.valueHeight + "px Arial";
-
-		context.fillStyle = "#0f0";
-		context.fillText(this.value, canvas.width/2 + (canvas.width/2 - this.x),
-		canvas.height/2 + (canvas.height/2 - this.y));
-		context.font = "" + this.valueHeight + "px Arial";
 	}
 }
