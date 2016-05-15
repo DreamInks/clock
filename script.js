@@ -58,15 +58,15 @@ function renderTime() {
 	context.shadowColor = "#36CDFF";
 	context.beginPath();
 	context.arc(canvas.width/2, canvas.height/2, 200, 
-		degToRad(270), degToRad(hours*15)-90);
+		degToRad(270), degToRad((hours*15)-90));
 	context.stroke();
 	context.beginPath();
 	context.arc(canvas.width/2, canvas.height/2, 170, 
-		degToRad(270), degToRad(minutes*6)-90);
+		degToRad(270), degToRad((minutes*6)-90));
 	context.stroke();
 	context.beginPath();
 	context.arc(canvas.width/2, canvas.height/2, 140, 
-		degToRad(270), degToRad(newSeconds*6)-90);
+		degToRad(270), degToRad((newSeconds*6)-90));
 	context.stroke();
 
 
@@ -88,13 +88,13 @@ function renderTime() {
 		notified = false;
 	}
 
-	if (seconds == 30 && deathnotif == false) {
-		notify("Random Trivia : Did you know that somebody died at this exact moment!");
-		deathnotif = true;
-	}
-	if (seconds == 31 && deathnotif == true) {
-		deathnotif = false;
-	}
+	// if (seconds == 30 && deathnotif == false) {
+	// 	notify("Random Trivia : Did you know that somebody died at this exact moment!");
+	// 	deathnotif = true;
+	// }
+	// if (seconds == 31 && deathnotif == true) {
+	// 	deathnotif = false;
+	// }
 }
 
 function renderBits() {
