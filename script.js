@@ -139,7 +139,7 @@ function clearCanvas() {
 ////////////////////////////////////////////////////////////////////////////
 
 function Bit(x,y,test) {
-	this.value = randomBetween(0,20);
+	this.value = randomBetween(0,2);
 	this.x = x;
 	this.y = y;
 	this.test = test;
@@ -154,16 +154,12 @@ function Bit(x,y,test) {
 	this.update = function() {
 		this.control();
 
-		if (randomBetween(0,100) == 0) {
-			this.value = randomBetween(0,20);
+		if (randomBetween(0,10) == 0) {
+			this.value = randomBetween(0,2);
 		}
 
 		if (randomBetween(0,100) == 0) {
-			// this.value = " ";
-		}
-
-		if (randomBetween(0,100) == 0) {
-			this.value = "-";
+			this.value = " ";
 		}
 
 		if (this.test == 0)
