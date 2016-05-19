@@ -53,9 +53,9 @@ function renderTime() {
 	context.strokeStyle = "#36CDFF";
 	context.lineWidth = 17;
 	context.lineCap = "round";
-	
 	context.shadowBlur = 15;
 	context.shadowColor = "#36CDFF";
+
 	context.beginPath();
 	context.arc(canvas.width/2, canvas.height/2, 200, 
 		degToRad(270), degToRad((hours*15)-90));
