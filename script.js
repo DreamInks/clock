@@ -58,7 +58,7 @@ function renderTime() {
 
 	context.beginPath();
 	context.arc(canvas.width/2, canvas.height/2, 200, 
-		degToRad(270), degToRad((hours*15)-90));
+		degToRad(270), degToRad((hours*30)-90));
 	context.stroke();
 	context.beginPath();
 	context.arc(canvas.width/2, canvas.height/2, 170, 
@@ -68,7 +68,7 @@ function renderTime() {
 	context.arc(canvas.width/2, canvas.height/2, 140, 
 		degToRad(270), degToRad((newSeconds*6)-90));
 	context.stroke();
-
+	console.log(hours);
 
 	var today = now.toDateString();
 	var time = now.toLocaleTimeString();
