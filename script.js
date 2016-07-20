@@ -35,7 +35,7 @@ function generateBits() {
 
 function web() {
 	clearCanvas();
-	renderBits();
+	// renderBits();
 	renderTime();
 }
 
@@ -132,7 +132,8 @@ function clearCanvas() {
 	gradient.addColorStop(0,"#116");
 	gradient.addColorStop(0.5,"#11a");
 	gradient.addColorStop(1,'#000');
-	context.fillStyle = gradient;
+	// context.fillStyle = gradient;
+	context.fillStyle = "#000";
 	context.fillRect(0,0,canvas.width,canvas.height);
 }
 
